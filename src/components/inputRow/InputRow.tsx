@@ -1,51 +1,21 @@
-import React, { useEffect, useRef, useState, MouseEvent } from 'react'
+import React, { MouseEvent } from 'react'
+import { wordItem } from '../../types/cardType'
 import './inputRow.scss'
 
 interface InputRowProps {
-    rowNumber: string
+    inputId: string,
+    wordList: wordItem[],
+    rowIndex: number,
+    onCardClickHandler: (e: MouseEvent<HTMLLabelElement>, rowIndex: number, columnIndex: number) => void
 }
 
-interface wordItem {
-    character: string
-    color: 'gray' | 'yellow' | 'green'
-}
-
-const maxLength = 5
-const initWordItem = { character: '', color: 'gray' } as wordItem
-
-export default function InputRow({ rowNumber }: InputRowProps) {
-    const [words, setWords] = useState<string>('')
-    const [wordList, setWordList] = useState<wordItem[]>(Array(maxLength).fill({ ...initWordItem }))
-    const inputRef = useRef<HTMLInputElement | null>(null)
-
-    useEffect(() => {
-        wordList.splice(0, words.length, ...words.split('').map(word => { return { character: word, color: 'gray' } as wordItem }))
-        const emptyCount = maxLength - words.length
-        wordList.splice(words.length, emptyCount, ...Array(emptyCount).fill({ ...initWordItem }))
-        setWordList([...wordList])
-    }, [words])
-
-    const onCardClickHandler = (e: MouseEvent<HTMLLabelElement>, index: number) => {
-        e.stopPropagation()
-        if (wordList[index].character !== '') {
-            if (wordList[index].color === 'gray') {
-                wordList[index].color = 'yellow'
-            } else if (wordList[index].color === 'yellow') {
-                wordList[index].color = 'green'
-            }else if (wordList[index].color === 'green') {
-                wordList[index].color = 'gray'
-            }
-            setWordList([...wordList])
-        }
-    }
-
+export default function InputRow({ inputId, wordList, rowIndex, onCardClickHandler }: InputRowProps) {
     return (
         <div className="container">
-            <input id={rowNumber} ref={inputRef} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value)} />
             {
                 wordList.map((item, index) => {
                     return (
-                        <label className={`card ${item.color}`} key={index} htmlFor={rowNumber} onClick={(e) => onCardClickHandler(e, index)}>
+                        <label className={`card ${item.color}`} key={index} htmlFor={inputId} onClick={(e) => onCardClickHandler(e, rowIndex, index)}>
                             {item.character}
                         </label>
                     )
