@@ -44,14 +44,17 @@ function App() {
     } else {
       setRow(maxChance - 1)
     }
+    setWords('')
   }
 
   const onButtonNextClick = () => {
+    console.log(wordGrid)
     if (row < maxChance - 1) {
       setRow(row + 1)
     } else {
       setRow(0)
     }
+    setWords('')
   }
 
   return (
@@ -68,7 +71,7 @@ function App() {
 
       <div className="row">
         <button onClick={onButtonPreviousClick}>Previous</button>
-        <input id={inputId} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value)} />
+        <input id={inputId} value={words} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value)} />
         <button onClick={onButtonNextClick}>Next</button>
       </div>
     </div>
