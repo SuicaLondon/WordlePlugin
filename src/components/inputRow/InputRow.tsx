@@ -16,7 +16,7 @@ export default function InputRow({ inputId, wordList, rowIndex, onCardClickHandl
                 wordList.map((item, index) => {
                     return (
                         <label className={`card ${item.color}`} key={index} htmlFor={inputId} onClick={(e) => onCardClickHandler(e, rowIndex, index)}>
-                            {item.character}
+                            {item.character.toUpperCase()}
                         </label>
                     )
                 })

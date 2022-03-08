@@ -2,6 +2,7 @@ import React, { useEffect, useState, MouseEvent } from 'react';
 import './App.scss';
 import InputRow from './components/inputRow/InputRow';
 import { wordItem } from './types/cardType';
+import wordFilter from './utils/wordFilter';
 
 const maxLength = 5
 const maxChance = 6
@@ -12,6 +13,7 @@ function App() {
   const [words, setWords] = useState<string>('')
   const [row, setRow] = useState<number>(0)
   const [wordGrid, setWordGrid] = useState<wordItem[][]>(Array.from(Array(maxChance), () => Array(maxLength).fill({ ...initWordItem })))
+  const [possibleWords, setPossibleWords] = useState<string[]>([])
 
   useEffect(() => {
     let wordList = wordGrid[row]
@@ -38,23 +40,25 @@ function App() {
     }
   }
 
+  useEffect(()=>{
+    setWords('')
+    setPossibleWords(wordFilter(wordGrid))
+  }, [row])
+
   const onButtonPreviousClick = () => {
     if (row > 0) {
       setRow(row - 1)
     } else {
       setRow(maxChance - 1)
     }
-    setWords('')
   }
 
   const onButtonNextClick = () => {
-    console.log(wordGrid)
     if (row < maxChance - 1) {
       setRow(row + 1)
     } else {
       setRow(0)
     }
-    setWords('')
   }
 
   return (
@@ -74,6 +78,14 @@ function App() {
         <input id={inputId} value={words} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value)} />
         <button onClick={onButtonNextClick}>Next</button>
       </div>
+
+      <div className="words-list">
+          {possibleWords.map(word=> {
+            return(
+              <div className='word-item'>{word}</div>
+            )
+          })}
+        </div>
     </div>
   );
 }

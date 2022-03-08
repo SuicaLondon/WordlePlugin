@@ -14,14 +14,14 @@
 
 .row > input {
   border: 1px solid #ddd;
-  padding: .5rem;
+  padding: 0.5rem;
   margin: 1rem;
 }
 
 .row > button {
-  padding: .5rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 
   &:hover {
     background-color: #ddd;
@@ -29,3 +29,11 @@
   }
 }
 
+.words-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem;
+  .word-item {
+    margin: 1rem;
+  }
+}
