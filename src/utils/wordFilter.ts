@@ -4,6 +4,7 @@ import { common } from "../data/words"
 export default function wordFilter(wordGrid: wordItem[][]): string[] {
     let words = common
     console.log(wordGrid)
+    // TODO: use closure or class to save all grid by color
     for (let i = 0; i < wordGrid.length; i++) {
         const wordList = wordGrid[i]
         for (let j = 0; j < wordList.length; j++) {
