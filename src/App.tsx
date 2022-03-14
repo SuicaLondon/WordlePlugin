@@ -75,7 +75,7 @@ function App() {
 
       <div className="row">
         <button onClick={onButtonPreviousClick}>Previous</button>
-        <input id={inputId} value={words} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value)} />
+        <input id={inputId} value={words} type="text" maxLength={maxLength} onChange={e => setWords(e.target.value.toLowerCase())} />
         <button onClick={onButtonNextClick}>Next</button>
       </div>
 
