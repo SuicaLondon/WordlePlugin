@@ -16,13 +16,21 @@ function App() {
   const [possibleWords, setPossibleWords] = useState<string[]>([])
 
   useEffect(() => {
-    let wordList = wordGrid[row]
-    wordList.splice(0, words.length, ...words.split('').map(word => { return { character: word, color: 'gray' } as WordItem }))
-    const emptyCount = maxLength - words.length
-    wordList.splice(words.length, emptyCount, ...Array(emptyCount).fill({ ...initWordItem }))
-    wordGrid[row] = wordList
-    setWordGrid([...wordGrid])
-  }, [words])
+    setWordGrid((grid => {
+      let wordList = grid[row]
+      wordList.splice(0, words.length, ...words.split('').map(word => { return { character: word, color: 'gray' } as WordItem }))
+      const emptyCount = maxLength - words.length
+      wordList.splice(words.length, emptyCount, ...Array(emptyCount).fill({ ...initWordItem }))
+      grid[row] = wordList
+      return [...grid]
+    }))
+  }, [row, words])
+
+  const updateWords = () => {
+    setWords('')
+    wordFilter.setInputedWords(wordGrid)
+    setPossibleWords(wordFilter.filterWords())
+  }
 
   const onCardClickHandler = (e: MouseEvent<HTMLLabelElement>, rowIndex: number, columnIndex: number) => {
     e.stopPropagation()
@@ -40,19 +48,13 @@ function App() {
     }
   }
 
-  useEffect(()=>{
-    setWords('')
-    // setPossibleWords(wordFilter.setInputedWords(wordGrid))
-    wordFilter.setInputedWords(wordGrid)
-    setPossibleWords(wordFilter.filterWords())
-  }, [row])
-
   const onButtonPreviousClick = () => {
     if (row > 0) {
       setRow(row - 1)
     } else {
       setRow(maxChance - 1)
     }
+    updateWords()
   }
 
   const onButtonNextClick = () => {
@@ -61,6 +63,7 @@ function App() {
     } else {
       setRow(0)
     }
+    updateWords()
   }
 
   return (
@@ -82,12 +85,12 @@ function App() {
       </div>
 
       <div className="words-list">
-          {possibleWords.map((word, index)=> {
-            return(
-              <div key={index} className='word-item'>{word}</div>
-            )
-          })}
-        </div>
+        {possibleWords.map((word, index) => {
+          return (
+            <div key={index} className='word-item'>{word}</div>
+          )
+        })}
+      </div>
     </div>
   );
 }
