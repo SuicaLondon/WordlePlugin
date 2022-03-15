@@ -1,23 +1,23 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
 import './App.scss';
 import InputRow from './components/inputRow/InputRow';
-import { wordItem } from './types/cardType';
+import { WordItem } from './types/cardType';
 import wordFilter from './utils/wordFilter';
 
 const maxLength = 5
 const maxChance = 6
-const initWordItem = { character: '', color: 'gray' } as wordItem
+const initWordItem = { character: '', color: 'gray' } as WordItem
 const inputId = "input"
 
 function App() {
   const [words, setWords] = useState<string>('')
   const [row, setRow] = useState<number>(0)
-  const [wordGrid, setWordGrid] = useState<wordItem[][]>(Array.from(Array(maxChance), () => Array(maxLength).fill({ ...initWordItem })))
+  const [wordGrid, setWordGrid] = useState<WordItem[][]>(Array.from(Array(maxChance), () => Array(maxLength).fill({ ...initWordItem })))
   const [possibleWords, setPossibleWords] = useState<string[]>([])
 
   useEffect(() => {
     let wordList = wordGrid[row]
-    wordList.splice(0, words.length, ...words.split('').map(word => { return { character: word, color: 'gray' } as wordItem }))
+    wordList.splice(0, words.length, ...words.split('').map(word => { return { character: word, color: 'gray' } as WordItem }))
     const emptyCount = maxLength - words.length
     wordList.splice(words.length, emptyCount, ...Array(emptyCount).fill({ ...initWordItem }))
     wordGrid[row] = wordList
@@ -42,7 +42,9 @@ function App() {
 
   useEffect(()=>{
     setWords('')
-    setPossibleWords(wordFilter(wordGrid))
+    // setPossibleWords(wordFilter.setInputedWords(wordGrid))
+    wordFilter.setInputedWords(wordGrid)
+    setPossibleWords(wordFilter.filterWords())
   }, [row])
 
   const onButtonPreviousClick = () => {
@@ -66,7 +68,7 @@ function App() {
       {
         wordGrid.map((wordList, index) => {
           return (
-            <div className={index === row ? 'current' : ''}>
+            <div key={index} className={index === row ? 'current' : ''}>
               <InputRow inputId={inputId} wordList={wordList} rowIndex={index} onCardClickHandler={onCardClickHandler} />
             </div>
           )
@@ -80,9 +82,9 @@ function App() {
       </div>
 
       <div className="words-list">
-          {possibleWords.map(word=> {
+          {possibleWords.map((word, index)=> {
             return(
-              <div className='word-item'>{word}</div>
+              <div key={index} className='word-item'>{word}</div>
             )
           })}
         </div>

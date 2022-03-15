@@ -1,10 +1,10 @@
 import React, { MouseEvent } from 'react'
-import { wordItem } from '../../types/cardType'
+import { WordItem } from '../../types/cardType'
 import './inputRow.scss'
 
 interface InputRowProps {
     inputId: string,
-    wordList: wordItem[],
+    wordList: WordItem[],
     rowIndex: number,
     onCardClickHandler: (e: MouseEvent<HTMLLabelElement>, rowIndex: number, columnIndex: number) => void
 }
