@@ -7,7 +7,6 @@ class WordFilter {
     yellows: string[][] = []
     grays: string[] = []
     constructor() {
-        console.log('init')
         this.initData()
     }
 
@@ -33,8 +32,6 @@ class WordFilter {
 
     filterWords(): string[] {
         const yellowFlat = this.yellows.flat()
-        console.log(this.yellows)
-        console.log(yellowFlat) 
         return this.words.filter(word => {
             for (let i = 0; i < word.length; i++) {
                 const character = word[i]
@@ -45,7 +42,6 @@ class WordFilter {
                     return false
                 }
                 if (yellowFlat.indexOf(character) !== -1 && this.yellows[i].indexOf(character) !== -1) {
-                    console.log(`${word} has ${character} at ${i}: yellow`)
                     return false
                 }
             }
@@ -78,7 +74,6 @@ class WordFilter {
         }
     }
     private insertGreen(character: string, index: number) {
-        console.log(character, index)
         if (!this.greens[index]) {
             this.greens[index] = character
         }
